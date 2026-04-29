@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Icon from "./Icon";
 import { useAuth } from "@/context/AuthContext";
+import GlobalSearch from "./GlobalSearch";
 
 const SIDEBAR_NAV = [
   { name: "Dashboard", href: "/dashboard", icon: "dashboard" },
@@ -13,18 +14,31 @@ const SIDEBAR_NAV = [
   { name: "Company Research", href: "/dashboard/company", icon: "corporate_fare" },
   { name: "Cold Outreach", href: "/dashboard/outreach", icon: "mail" },
   // { name: "Job Tracker", href: "/dashboard/jobs", icon: "assignment_turned_in" },
-  { name: "Settings", href: "/dashboard/settings", icon: "settings" },
+  { name: "Settings", href: "/settings", icon: "settings" },
 ];
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { user, logout } = useAuth();
 
   // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [router.pathname]);
+
+  // Ctrl+K shortcut for search
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div className="bg-background min-h-screen text-on-background flex">
@@ -44,17 +58,17 @@ export default function DashboardLayout({ children }) {
           }`}
         >
           {/* Logo Container */}
-          <div className="p-8 flex items-center justify-between">
+          <div className="px-5 py-5 flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-[#1D4ED8]">
+              <h1 className="text-lg font-bold text-[#1D4ED8]">
                 LetsGrowAi
               </h1>
-              <p className="text-[10px] uppercase tracking-widest text-outline mt-1 font-body">
+              <p className="text-[9px] uppercase tracking-widest text-outline mt-0.5 font-body">
                 Career Growth
               </p>
             </div>
             <button
-              className="lg:hidden p-2 text-outline hover:text-on-surface transition-colors"
+              className="lg:hidden p-1.5 text-outline hover:text-on-surface transition-colors"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               <Icon name="close" />
@@ -62,20 +76,20 @@ export default function DashboardLayout({ children }) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-4 space-y-1 overflow-y-auto custom-scrollbar">
+          <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto custom-scrollbar">
             {SIDEBAR_NAV.map((item) => {
               const isActive = router.pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg transition-all duration-200 text-[13px] ${
                     isActive
                       ? "text-[#1D4ED8] font-bold bg-[#1D4ED8]/10"
                       : "text-slate-500 hover:bg-white/50 hover:text-slate-700"
                   }`}
                 >
-                  <Icon name={item.icon} className={isActive ? "text-[#1D4ED8]" : ""} filled={isActive} />
+                  <Icon name={item.icon} className={`text-[18px] ${isActive ? "text-[#1D4ED8]" : ""}`} filled={isActive} />
                   {item.name}
                 </Link>
               );
@@ -83,13 +97,13 @@ export default function DashboardLayout({ children }) {
           </nav>
 
           {/* Bottom Footer Actions */}
-          <div className="mt-auto flex flex-col gap-1 border-t border-surface-container pt-4 p-4">
-            <Link href="/help" className="flex items-center gap-3 px-3 py-2 text-slate-500 font-medium text-sm hover:bg-[#f2f3ff] rounded-lg transition-colors">
-              <Icon name="help_outline" />
+          <div className="mt-auto flex flex-col gap-0.5 border-t border-surface-container pt-3 p-3">
+            <Link href="/help" className="flex items-center gap-2.5 px-3 py-2 text-slate-500 font-medium text-[13px] hover:bg-[#f2f3ff] rounded-lg transition-colors">
+              <Icon name="help_outline" className="text-[18px]" />
               <span>Help</span>
             </Link>
-            <button onClick={logout} className="flex items-center gap-3 px-3 py-2 text-slate-500 font-medium text-sm hover:bg-red-50 hover:text-error rounded-lg transition-colors w-full text-left">
-              <Icon name="logout" />
+            <button onClick={logout} className="flex items-center gap-2.5 px-3 py-2 text-slate-500 font-medium text-[13px] hover:bg-red-50 hover:text-error rounded-lg transition-colors w-full text-left">
+              <Icon name="logout" className="text-[18px]" />
               <span>Sign Out</span>
             </button>
           </div>
@@ -99,25 +113,21 @@ export default function DashboardLayout({ children }) {
       {/* ═══ Main Content Area ═══ */}
       <div className="flex-1 flex flex-col min-h-screen lg:ml-64 w-full">
         {/* Top Header */}
-        <header className="sticky top-0 z-30 flex items-center justify-between px-6 lg:px-8 h-16 bg-[#faf8ff]/80 backdrop-blur-xl border-b border-[#e2e7ff]">
-          <div className="flex items-center gap-4 w-full lg:w-auto">
+        <header className="sticky top-0 z-30 flex items-center justify-between px-4 lg:px-6 h-14 bg-[#faf8ff]/80 backdrop-blur-xl border-b border-[#e2e7ff]">
+          <div className="flex items-center gap-3 w-full lg:w-auto">
             {/* Hamburger (Mobile only) */}
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden p-2 text-outline hover:text-on-surface transition-colors rounded-lg hover:bg-surface-container"
+              className="lg:hidden p-1.5 text-outline hover:text-on-surface transition-colors rounded-lg hover:bg-surface-container"
             >
               <Icon name="menu" />
             </button>
 
-            {/* Search */}
-            <div className="flex items-center bg-surface-container-low px-4 py-2 rounded-full flex-1 lg:w-96 border border-transparent focus-within:border-outline-variant/30 transition-colors">
-              <Icon name="search" className="text-outline text-sm mr-2" />
-              <input
-                className="bg-transparent border-none focus:ring-0 text-sm w-full font-body outline-none text-on-surface placeholder:text-outline-variant"
-                placeholder="Search resources..."
-                type="text"
-              />
-            </div>
+            {/* Search Trigger */}
+            <button onClick={() => setSearchOpen(true)} className="flex items-center bg-surface-container-low px-3 py-1.5 rounded-full flex-1 lg:w-80 border border-transparent hover:border-outline-variant/30 transition-colors gap-2 cursor-pointer">
+              <Icon name="search" className="text-outline text-sm" />
+              <span className="text-[13px] text-outline-variant font-body">Search... <kbd className="hidden sm:inline font-mono bg-surface-container ml-1 px-1 py-0.5 rounded border border-outline-variant/20 text-[10px]">Ctrl+K</kbd></span>
+            </button>
           </div>
 
           <div className="flex items-center gap-4 lg:gap-6 ml-4">
@@ -157,6 +167,9 @@ export default function DashboardLayout({ children }) {
         {/* Dynamic Page Content */}
         {children}
       </div>
+
+      {/* Global Search Overlay */}
+      <GlobalSearch isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }

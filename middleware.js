@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 const PROTECTED_ROUTES = [
   '/dashboard',
   '/onboarding',
+  '/settings',
 ];
 
 // ─── Auth routes — redirect to dashboard if already logged in ─────────────────
@@ -50,6 +51,7 @@ export const config = {
     '/',
     '/dashboard/:path*',
     '/onboarding',
+    '/settings',
     '/auth/login',
     '/auth/register',
   ],

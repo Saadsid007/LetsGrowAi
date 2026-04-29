@@ -22,10 +22,10 @@ export default function CareerScoreCard({ score }) {
   const strokeDashoffset = strokeDasharray - (strokeDasharray * percentage) / 100;
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-outline-variant/10 flex flex-col md:flex-row items-center gap-8">
+    <div className="bg-white rounded-2xl p-4 shadow-sm border border-outline-variant/10 flex flex-col md:flex-row items-center gap-5">
       
       {/* Circular Gauge */}
-      <div className="relative w-40 h-40 flex-shrink-0 flex items-center justify-center">
+      <div className="relative w-28 h-28 flex-shrink-0 flex items-center justify-center">
         <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
           {/* Background circle */}
           <circle
@@ -52,21 +52,21 @@ export default function CareerScoreCard({ score }) {
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className={`text-4xl font-extrabold font-headline ${colorClass}`}>{score}</span>
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">/ 1000</span>
+          <span className={`text-2xl font-extrabold font-headline ${colorClass}`}>{score}</span>
+          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">/ 1000</span>
         </div>
       </div>
 
       {/* Details */}
-      <div className="flex-1 text-center md:text-left space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/5 text-primary text-[10px] font-extrabold uppercase tracking-widest border border-primary/10">
-          <Icon name="military_tech" className="text-[14px]" />
+      <div className="flex-1 text-center md:text-left space-y-1.5">
+        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/5 text-primary text-[9px] font-extrabold uppercase tracking-widest border border-primary/10">
+          <Icon name="military_tech" className="text-[12px]" />
           Career Score
         </div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-on-surface font-headline tracking-tight">
+        <h2 className="text-lg md:text-xl font-extrabold text-on-surface font-headline tracking-tight">
           Your Readiness Score
         </h2>
-        <p className="text-slate-500 font-medium text-sm max-w-md">
+        <p className="text-slate-500 font-medium text-[12px] max-w-md leading-relaxed">
           {message} This score aggregates your profile completeness, ATS resume strength, mock interview performance, and roadmap progress.
         </p>
       </div>

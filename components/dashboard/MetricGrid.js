@@ -40,19 +40,19 @@ export default function MetricGrid({ data }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
       {metrics.map((m, idx) => (
         <Link href={m.link} key={idx}>
-          <div className="bg-white p-5 rounded-2xl border border-outline-variant/10 shadow-sm hover:shadow-md hover:border-primary/20 transition-all group cursor-pointer h-full flex flex-col justify-between">
-            <div className="flex items-center gap-3 mb-4">
-              <div className={`w-10 h-10 rounded-xl ${m.bg} ${m.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                <Icon name={m.icon} className="text-[20px]" />
+          <div className="bg-white p-3.5 rounded-xl border border-outline-variant/10 shadow-sm hover:shadow-md hover:border-primary/20 transition-all group cursor-pointer h-full flex flex-col justify-between">
+            <div className="flex items-center gap-2 mb-3">
+              <div className={`w-8 h-8 rounded-lg ${m.bg} ${m.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <Icon name={m.icon} className="text-[16px]" />
               </div>
-              <h3 className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest leading-tight">
+              <h3 className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest leading-tight">
                 {m.title}
               </h3>
             </div>
-            <div className="text-3xl font-black font-headline text-on-surface">
+            <div className="text-2xl font-black font-headline text-on-surface">
               {m.value}
             </div>
           </div>
