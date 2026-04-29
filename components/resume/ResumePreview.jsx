@@ -1,27 +1,12 @@
 import React from 'react';
 
 export default function ResumePreview({ data }) {
-  if (!data) return (
-    <div className="flex-1 flex items-center justify-center opacity-50 text-sm text-on-surface-variant">
-      Loading preview...
-    </div>
-  );
-
-  const s = data.sections || {};
-  const personal = s.personal || {};
-  const experience = s.experience || [];
-  const education = s.education || [];
-  const skills = s.skills || {};
-  const projects = s.projects || [];
-  const certifications = s.certifications || [];
-  const customSections = s.customSections || [];
-  const sectionTitles = s.sectionTitles || {};
-  const layoutOrder = s.layoutOrder || ['personal', 'summary', 'experience', 'education', 'skills', 'projects', 'certifications'];
-  const theme = data.templateId || 'ats-friendly';
-
-  // Reference to measure container height
+  // Reference to measure container height — hooks must be called unconditionally
   const containerRef = React.useRef(null);
+  const experience = data?.sections?.experience || [];
+
   React.useEffect(() => {
+    if (!data) return;
     if (containerRef.current) {
       // Very rough A4 page equivalent in pixels (assuming ~1000px height for preview)
       const isOverflowing = containerRef.current.scrollHeight > 1120;
@@ -34,6 +19,23 @@ export default function ResumePreview({ data }) {
       }
     }
   });
+
+  if (!data) return (
+    <div className="flex-1 flex items-center justify-center opacity-50 text-sm text-on-surface-variant">
+      Loading preview...
+    </div>
+  );
+
+  const s = data.sections || {};
+  const personal = s.personal || {};
+  const education = s.education || [];
+  const skills = s.skills || {};
+  const projects = s.projects || [];
+  const certifications = s.certifications || [];
+  const customSections = s.customSections || [];
+  const sectionTitles = s.sectionTitles || {};
+  const layoutOrder = s.layoutOrder || ['personal', 'summary', 'experience', 'education', 'skills', 'projects', 'certifications'];
+  const theme = data.templateId || 'ats-friendly';
 
   const themeStyles = {
     clean: {

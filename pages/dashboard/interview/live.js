@@ -140,6 +140,7 @@ export default function LiveInterview() {
       setTimeRemaining(prev => prev - 1);
     }, 1000);
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeRemaining, loading, isSubmitting, savingAnswer]);
 
   // Format time mm:ss
