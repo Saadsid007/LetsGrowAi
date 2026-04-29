@@ -1,8 +1,8 @@
 import connectDB from '../../../../lib/db';
 import { getUserFromRequest } from '../../../../lib/auth';
+import User from '../../../../models/User';
 import Resume from '../../../../models/Resume';
 import { validateResumeOwnership, resumeToPlainText } from '../../../../lib/resumeUtils';
-import mongoose from 'mongoose';
 import { analyzeResumeVsJD } from '../../../../lib/gemini';
 
 export default async function handler(req, res) {
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
 
     // Increment tracker and save User
     user.aiUsage.atsCount += 1;
-    await user.save({ validateBeforeSave: false });
+    await User.updateOne({ _id: user._id }, { $set: { aiUsage: user.aiUsage } });
 
     return res.status(200).json({
       success: true,

@@ -1,5 +1,6 @@
 import connectDB from '../../../lib/db';
 import { getUserFromRequest } from '../../../lib/auth';
+import User from '../../../models/User';
 import { onboardingSchema } from '../../../lib/validators';
 
 export default async function handler(req, res) {
@@ -33,26 +34,50 @@ export default async function handler(req, res) {
 
     const { name, phone, currentStatus, targetRole, skills, experienceLevel, preferredLocation } = result.data;
 
-    // 3. Update user fields
-    if (name !== undefined) user.name = name;
-    if (phone !== undefined) user.phone = phone;
-    if (currentStatus !== undefined) user.currentStatus = currentStatus;
-    if (targetRole !== undefined) user.targetRole = targetRole;
-    if (skills !== undefined) user.skills = skills;
-    if (experienceLevel !== undefined) user.experienceLevel = experienceLevel;
-    if (preferredLocation !== undefined) user.preferredLocation = preferredLocation;
+    // 3. Build the update object
+    const updateFields = { lastActive: new Date(), onboardingComplete: true };
+    if (name !== undefined) updateFields.name = name;
+    if (phone !== undefined) updateFields.phone = phone;
+    if (currentStatus !== undefined) updateFields.currentStatus = currentStatus;
+    if (targetRole !== undefined) updateFields.targetRole = targetRole;
+    if (experienceLevel !== undefined) updateFields.experienceLevel = experienceLevel;
+    if (preferredLocation !== undefined) updateFields.preferredLocation = preferredLocation;
 
-    // 4. Mark onboarding complete + calculate profile score
-    user.onboardingComplete = true;
-    user.calculateProfileScore();
-    user.lastActive = new Date();
+    // Handle skills — ensure new object format
+    if (skills !== undefined) {
+      if (Array.isArray(skills)) {
+        updateFields.skills = { technical: skills, soft: [] };
+      } else {
+        updateFields.skills = skills;
+      }
+    }
 
-    await user.save({ validateBeforeSave: false });
+    // Calculate profile score inline
+    let score = 0;
+    const n = name || user.name; if (n) score += 10;
+    score += 10; // email always exists
+    if (targetRole || user.targetRole) score += 15;
+    if (experienceLevel || user.experienceLevel) score += 10;
+    if (preferredLocation || user.preferredLocation || user.location) score += 10;
+    if (user.education?.degree) score += 10;
+    if (user.bio) score += 10;
+    if (user.linkedinUrl) score += 5;
+    if (user.githubUrl) score += 5;
+    const sk = updateFields.skills || user.skills;
+    const techSkills = Array.isArray(sk) ? sk : (sk?.technical || []);
+    if (techSkills.length > 0) score += 15;
+    updateFields.profileScore = Math.min(score, 100);
+
+    // 4. Use updateOne to avoid schema conflicts on legacy docs
+    await User.updateOne({ _id: user._id }, { $set: updateFields });
+
+    // Fetch updated user to return
+    const updatedUser = await User.findById(user._id);
 
     return res.status(200).json({
       success: true,
       message: 'Onboarding complete!',
-      user: user.toSafeObject(),
+      user: updatedUser.toSafeObject(),
     });
   } catch (error) {
     console.error('[ONBOARDING ERROR]:', error);

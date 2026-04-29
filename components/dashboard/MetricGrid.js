@@ -5,7 +5,7 @@ export default function MetricGrid({ data }) {
   const metrics = [
     {
       title: "ATS Resume Score",
-      value: data.resume?.atsScore ? `${data.resume.atsScore}/100` : "N/A",
+      value: data.resume?.latestAtsScore ? `${data.resume.latestAtsScore}/100` : "N/A",
       icon: "document_scanner",
       color: "text-blue-500",
       bg: "bg-blue-500/10",
@@ -14,7 +14,7 @@ export default function MetricGrid({ data }) {
     {
       title: "Avg Interview Score",
       value: data.interviews?.length > 0 
-        ? `${Math.round(data.interviews.reduce((a, b) => a + (b.overallScore || 0), 0) / data.interviews.length)}%` 
+        ? `${Math.round(data.interviews.filter(i => i.report?.overallScore).reduce((a, b) => a + (b.report.overallScore || 0), 0) / (data.interviews.filter(i => i.report?.overallScore).length || 1))}%` 
         : "N/A",
       icon: "mic",
       color: "text-purple-500",

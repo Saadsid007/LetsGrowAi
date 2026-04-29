@@ -55,9 +55,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // 7. Update lastActive timestamp
-    user.lastActive = new Date();
-    await user.save({ validateBeforeSave: false });
+    // 7. Update lastActive timestamp (use updateOne to avoid schema conflicts on legacy docs)
+    await User.updateOne({ _id: user._id }, { $set: { lastActive: new Date() } });
 
     // 8. Generate JWT + set cookie
     const token = generateToken(user._id.toString());

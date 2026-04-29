@@ -20,7 +20,7 @@ export default function RecentActivity({ data }) {
       events.push({
         id: `int_${i._id}`,
         type: 'interview',
-        title: `Completed ${i.type || 'Mock'} Interview`,
+        title: `Completed ${i.config?.interviewType || 'Mock'} Interview`,
         date: new Date(i.createdAt),
         icon: 'mic',
         color: 'text-purple-500'

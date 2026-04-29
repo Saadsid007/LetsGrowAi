@@ -17,7 +17,10 @@ function calculateCareerScore({ user, resume, interviews, roadmap }) {
   if (user) {
     if (user.targetRole) score += 30;
     if (user.experienceLevel) score += 30;
-    if (user.skills && user.skills.length > 3) score += 40;
+    if (user.skills) {
+      const skillCount = Array.isArray(user.skills) ? user.skills.length : ((user.skills.technical?.length || 0) + (user.skills.soft?.length || 0));
+      if (skillCount > 3) score += 40;
+    }
   }
 
   // 2. Resume ATS Score (max 300)

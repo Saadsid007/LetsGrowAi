@@ -21,9 +21,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // Update lastActive
-    user.lastActive = new Date();
-    await user.save({ validateBeforeSave: false });
+    // Update lastActive (use updateOne to avoid schema conflicts on legacy docs)
+    await User.updateOne({ _id: user._id }, { $set: { lastActive: new Date() } });
 
     return res.status(200).json({
       success: true,

@@ -141,6 +141,16 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+// ─── Pre-Save Hook: Migrate legacy skills format (flat array → object) ────────
+UserSchema.pre('save', function () {
+  if (Array.isArray(this.skills)) {
+    // Legacy format: skills was a flat string array like ["figma", "Next.js"]
+    // Convert to new format: { technical: [...old items], soft: [] }
+    const oldSkills = this.skills;
+    this.skills = { technical: oldSkills, soft: [] };
+  }
+});
+
 // ─── Pre-Save Hook: Hash password before saving ───────────────────────────────
 UserSchema.pre('save', async function () {
   // Only hash if the passwordHash field was actually modified

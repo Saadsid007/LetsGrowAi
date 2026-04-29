@@ -1,5 +1,6 @@
 import { getUserFromRequest } from '../../lib/auth';
 import connectDB from '../../lib/db';
+import User from '../../models/User';
 import { tailorResumeForJD } from '../../lib/gemini';
 
 export default async function handler(req, res) {
@@ -40,7 +41,7 @@ export default async function handler(req, res) {
 
     // Increment tracker and save User
     user.aiUsage.tailorCount += 1;
-    await user.save({ validateBeforeSave: false });
+    await User.updateOne({ _id: user._id }, { $set: { aiUsage: user.aiUsage } });
 
     return res.status(200).json({
       success: true,

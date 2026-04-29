@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     
     // Recalculate score
     const newScore = updatedUser.calculateProfileScore();
-    await updatedUser.save();
+    await User.updateOne({ _id: user._id }, { $set: { profileScore: newScore } });
 
     return res.status(200).json({ success: true, user: updatedUser.toSafeObject(), profileCompleteness: newScore });
   } catch (error) {

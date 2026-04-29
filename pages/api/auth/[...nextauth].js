@@ -43,7 +43,7 @@ export const authOptions = {
             passwordHash: undefined,
             onboardingComplete: false,
             profileScore: 30,
-            skills: [],
+            skills: { technical: [], soft: [] },
             savedJobs: [],
             completedModules: [],
             currentStatus: '',
