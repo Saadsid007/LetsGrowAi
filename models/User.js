@@ -171,9 +171,28 @@ UserSchema.methods.toSafeObject = function () {
 };
 
 // ─── Pre-Find Hook: Filter Soft Deleted Users ────────────────────────────────
-UserSchema.pre(/^find/, function (next) {
-  this.where({ deleted: { $ne: true } });
-  next();
+UserSchema.pre('find', function () {
+  if (!this.getQuery().deleted) {
+    this.where({ deleted: { $ne: true } });
+  }
+});
+
+UserSchema.pre('findOne', function () {
+  if (!this.getQuery().deleted) {
+    this.where({ deleted: { $ne: true } });
+  }
+});
+
+UserSchema.pre('findOneAndUpdate', function () {
+  if (!this.getQuery().deleted) {
+    this.where({ deleted: { $ne: true } });
+  }
+});
+
+UserSchema.pre('countDocuments', function () {
+  if (!this.getQuery().deleted) {
+    this.where({ deleted: { $ne: true } });
+  }
 });
 
 // ─── Helper: Calculate Profile Score ─────────────────────────────────────────
