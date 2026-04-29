@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Design System: The Architect's Blueprint ===== */
+
+/* --- Base Layer --- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  color: #131b2e;
+  background: #faf8ff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: #dce1ff;
+  color: #001551;
+}
+
+/* --- Material Symbols --- */
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+  font-size: inherit;
+}
+
+.material-symbols-outlined.filled {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* --- Glassmorphism Utility --- */
+.glass-panel {
+  background: rgba(250, 248, 255, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* --- Bento Card Interaction --- */
+.bento-card {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bento-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* --- Ambient Shadow Utility --- */
+.shadow-ambient {
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+}
+
+.shadow-ambient-lg {
+  box-shadow: 0 25px 50px rgba(15, 23, 42, 0.1);
+}
+
+/* --- Scroll-triggered animations --- */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* stagger children */
+.animate-on-scroll.visible .stagger-child:nth-child(1) { transition-delay: 0.05s; }
+.animate-on-scroll.visible .stagger-child:nth-child(2) { transition-delay: 0.1s; }
+.animate-on-scroll.visible .stagger-child:nth-child(3) { transition-delay: 0.15s; }
+.animate-on-scroll.visible .stagger-child:nth-child(4) { transition-delay: 0.2s; }
+.animate-on-scroll.visible .stagger-child:nth-child(5) { transition-delay: 0.25s; }
+.animate-on-scroll.visible .stagger-child:nth-child(6) { transition-delay: 0.3s; }
+.animate-on-scroll.visible .stagger-child:nth-child(7) { transition-delay: 0.35s; }
+.animate-on-scroll.visible .stagger-child:nth-child(8) { transition-delay: 0.4s; }
+
+.stagger-child {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.animate-on-scroll.visible .stagger-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Progress Circle Animation --- */
+@keyframes dashDraw {
+  from {
+    stroke-dashoffset: 440;
+  }
+}
+
+.progress-circle {
+  animation: dashDraw 1.8s ease-out forwards;
+}
+
+/* --- Counter Animation --- */
+@keyframes countPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.count-animate {
+  animation: countPulse 0.4s ease-out;
+}
+
+/* --- Navbar Scroll Effect --- */
+.navbar-scrolled {
+  box-shadow: 0 4px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* --- Mobile Menu Overlay --- */
+.mobile-menu-overlay {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.mobile-menu-panel {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f2f3ff;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c4c5d7;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #747686;
+}
+
+/* --- Auth Page Utilities --- */
+.grid-pattern {
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signature-accent {
+  border-bottom: 2px solid #0058be;
+  padding-bottom: 2px;
+}
+
+/* Onboarding card selection */
+.onboarding-card {
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.onboarding-card.selected {
+  ring: 2px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+  transform: translateY(-4px);
+}
+
+/* Step transition */
+.step-enter {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.step-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+/* --- Utility Layers --- */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
